@@ -1,0 +1,30 @@
+<%# app/views/sessions/new.html.erb %>
+
+<%# フラッシュメッセージ（エラーや成功の通知）の表示エリア %>
+<% if flash[:alert] %>
+  <div style="color: red;"><%= flash[:alert] %></div>
+<% end %>
+
+<% if flash[:notice] %>
+  <div style="color: green;"><%= flash[:notice] %></div>
+<% end %> <%# 💡ここできちんと閉じます %>
+
+<div class="container mt-5">
+  <h2>Log in</h2>
+
+  <%= form_with url: session_path do |form| %>
+    <div class="mb-3">
+      <%= form.label :name, "Name", class: "form-label" %>
+      <%= form.text_field :name, required: true, autofocus: true, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :password, "Password", class: "form-label" %>
+      <%= form.password_field :password, required: true, autocomplete: "current-password", class: "form-control" %>
+    </div>
+
+    <div>
+      <%= form.submit "Log in", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
