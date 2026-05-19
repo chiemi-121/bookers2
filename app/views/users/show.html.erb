@@ -1,0 +1,80 @@
+<div class="container px-5 px-sm-0 mt-3">
+  <div class="row">
+    <!-- 🌐 左側：共通サイドバー（3カラム分） -->
+    <div class="col-md-3">
+      <h2>User info</h2>
+
+      <% if @user.profile_image.attached? %>
+        <%= image_tag @user.profile_image, size: "100x100", class: "attachment user profile_image" %>
+      <% else %>
+        <%= image_tag "no_image.jpg", size: "100x100", class: "attachment user profile_image" %>
+      <% end %>
+
+      <table class="table">
+        <tbody>
+          <tr>
+            <th>name</th>
+            <th><%= @user.name %></th>
+          </tr>
+          <tr>
+            <th>introduction</th>
+            <th><%= @user.introduction %></th> <!-- ✨ 自己紹介文を表示！ -->
+          </tr>
+        </tbody>
+      </table>
+      
+      <div class="row mb-3">
+        <!-- ✨ 正しいプロフィール編集画面へのリンクに修正！ -->
+        <%= link_to edit_user_path(@user), class: "btn btn-outline-secondary btn-block" do %>
+          <i class="fas fa-user-cog"></i> プロフィール編集
+        <% end %>
+      </div>
+
+      <h2 class="mt-3">New book</h2>
+      <%= form_with model: @book, local: true do |form| %>
+        <div class="mb-3">
+          <%= form.label :title, "Title", class: "form-label" %>
+          <%= form.text_field :title, required: true, class: "form-control" %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :body, "Opinion", class: "form-label" %>
+          <%= form.text_area :body, required: true, class: "form-control" %>
+        </div>
+        <div>
+          <%= form.submit "Create Book", class: "btn btn-success" %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- 🌐 右側：そのユーザーの投稿一覧（9カラム分） -->
+    <div class="col-md-8 offset-md-1">
+      <h2>Books</h2>
+      <table class="table table-hover table-inverse">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Title</th>
+            <th>Opinion</th>
+            <th colspan="3"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @books.each do |book| %>
+            <tr>
+              <td>
+                <!-- ✨ 投稿したユーザーの画像を表示する仕様に書き換え！ -->
+                <% if book.user.profile_image.attached? %>
+                  <%= image_tag book.user.profile_image, size: "40x40", class: "attachment user profile_image" %>
+                <% else %>
+                  <%= image_tag "no_image.jpg", size: "40x40", class: "attachment user profile_image" %>
+                <% end %>
+              </td>
+              <td><%= link_to book.title, book_path(book) %></td>
+              <td><%= book.body %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

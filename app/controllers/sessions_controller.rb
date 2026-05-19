@@ -1,23 +1,27 @@
+# app/controllers/sessions_controller.rb
 class SessionsController < ApplicationController
-  allow_unauthenticated_access only: %i[ new create ]
-  rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_session_url, alert: "Try again later." }
+  # ログイン画面の表示とログイン処理は、未ログインでもアクセスできるように設定
+  allow_unauthenticated_access only: [ :new, :create ]
 
   def new
   end
 
   def create
+    # 💡 params[:name] を使って、ユーザー名とパスワードで認証します
     if user = User.authenticate_by(name: params[:name], password: params[:password])
       start_new_session_for user
-      redirect_to root_path, notice: "Signed in successfully."
+      # 処理成功時のサクセスメッセージ（successfully を含める）
+      redirect_to root_path, notice: "Sign in successfully."
     else
-      # 失敗時はアラートを出してログイン画面を再表示
-      flash.now[:alert] = "Invalid name or password.（error）"
+      # 処理失敗時のエラーメッセージ（error を含める）
+      flash.now[:alert] = "Invalid name or password. (error)"
       render :new, status: :unprocessable_entity
     end
   end
 
   def destroy
     terminate_session
-    redirect_to new_session_path
+    # ログアウト成功時のサクセスメッセージ（successfully を含める）
+    redirect_to root_path, notice: "Sign out successfully."
   end
 end

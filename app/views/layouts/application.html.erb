@@ -23,6 +23,40 @@
   </head>
 
   <body>
+    <!-- 💡 ヘッダーエリア -->
+    <header class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <!-- ロゴ（クリックするとルートパスへ） -->
+        <%= link_to "Bookers", root_path, class: "navbar-brand" %>
+        
+        <div class="collapse navbar-collapse justify-content-end">
+          <ul class="navbar-nav">
+            <% if Current.user %>
+              <!-- 💡 ログイン後のメニュー（正しいリンク先に書き換えました！） -->
+              <li class="nav-item"><%= link_to "Home", user_path(Current.user), class: "nav-link text-light" %></li>
+              <li class="nav-item"><%= link_to "Users", users_path, class: "nav-link text-light" %></li>
+              <li class="nav-item"><%= link_to "Books", books_path, class: "nav-link text-light" %></li>
+              <li class="nav-item"><%= link_to "Log out", session_path, data: { turbo_method: :delete }, class: "nav-link text-light" %></li>
+            <% else %>
+              <!-- 💡 ログイン前のメニュー -->
+              <li class="nav-item"><%= link_to "Home", root_path, class: "nav-link text-light" %></li>
+              <li class="nav-item"><%= link_to "About", about_path, class: "nav-link text-light" %></li>
+              <li class="nav-item"><%= link_to "Sign up", new_user_path, class: "nav-link text-light" %></li>
+              <li class="nav-item"><%= link_to "Log in", new_session_path, class: "nav-link text-light" %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <!-- フラッシュメッセージの共通表示エリア -->
+    <% if flash[:notice] %>
+      <div class="alert alert-success"><%= flash[:notice] %></div>
+    <% end %>
+    <% if flash[:alert] %>
+      <div class="alert alert-danger"><%= flash[:alert] %></div>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>
