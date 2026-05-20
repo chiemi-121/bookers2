@@ -10,53 +10,98 @@
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <!-- 🌐 Bootstrap 5 のCSSを直接読み込む -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- 🌐 Font Awesome（アイコン用）のCDNを綺麗に修復しました -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <!-- 💡 ヘッダーエリア -->
-    <header class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <header class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
       <div class="container">
-        <!-- ロゴ（クリックするとルートパスへ） -->
-        <%= link_to "Bookers", root_path, class: "navbar-brand" %>
-        
-        <div class="collapse navbar-collapse justify-content-end">
-          <ul class="navbar-nav">
+        <!-- ロゴ -->
+        <%= link_to "Bookers", root_path, class: "navbar-brand font-weight-bold" %>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <!-- 💡 flex-row と nav-link のスタイルを調整して確実に綺麗に横並びにします -->
+          <ul class="navbar-nav ms-auto flex-row">
             <% if Current.user %>
-              <!-- 💡 ログイン後のメニュー（正しいリンク先に書き換えました！） -->
-              <li class="nav-item"><%= link_to "Home", user_path(Current.user), class: "nav-link text-light" %></li>
-              <li class="nav-item"><%= link_to "Users", users_path, class: "nav-link text-light" %></li>
-              <li class="nav-item"><%= link_to "Books", books_path, class: "nav-link text-light" %></li>
-              <li class="nav-item"><%= link_to "Log out", session_path, data: { turbo_method: :delete }, class: "nav-link text-light" %></li>
+              <li class="nav-item">
+                <%= link_to user_path(Current.user), class: "nav-link text-light px-3" do %>
+                  <i class="fas fa-home"></i> Home
+                <% end %>
+              </li>
+              <li class="nav-item">
+                <%= link_to users_path, class: "nav-link text-light px-3" do %>
+                  <i class="fas fa-users"></i> Users
+                <% end %>
+              </li>
+              <li class="nav-item">
+                <%= link_to books_path, class: "nav-link text-light px-3" do %>
+                  <i class="fas fa-book-open"></i> Books
+                <% end %>
+              </li>
+              <li class="nav-item">
+                <%= link_to session_path, data: { turbo_method: :delete }, class: "nav-link text-light px-3" do %>
+                  <i class="fas fa-sign-out-alt"></i> Log out
+                <% end %>
+              </li>
             <% else %>
-              <!-- 💡 ログイン前のメニュー -->
-              <li class="nav-item"><%= link_to "Home", root_path, class: "nav-link text-light" %></li>
-              <li class="nav-item"><%= link_to "About", about_path, class: "nav-link text-light" %></li>
-              <li class="nav-item"><%= link_to "Sign up", new_user_path, class: "nav-link text-light" %></li>
-              <li class="nav-item"><%= link_to "Log in", new_session_path, class: "nav-link text-light" %></li>
+              <li class="nav-item">
+                <%= link_to root_path, class: "nav-link text-light px-3" do %>
+                  <i class="fas fa-home"></i> Home
+                <% end %>
+              </li>
+              <li class="nav-item">
+                <%= link_to about_path, class: "nav-link text-light px-3" do %>
+                  <i class="fas fa-link"></i> About
+                <% end %>
+              </li>
+              <li class="nav-item">
+                <%= link_to new_user_path, class: "nav-link text-light px-3" do %>
+                  <i class="fas fa-user-plus"></i> Sign up
+                <% end %>
+              </li>
+              <li class="nav-item">
+                <%= link_to new_session_path, class: "nav-link text-light px-3" do %>
+                  <i class="fas fa-sign-in-alt"></i> Log in
+                <% end %>
+              </li>
             <% end %>
           </ul>
         </div>
       </div>
     </header>
 
-    <!-- フラッシュメッセージの共通表示エリア -->
-    <% if flash[:notice] %>
-      <div class="alert alert-success"><%= flash[:notice] %></div>
-    <% end %>
-    <% if flash[:alert] %>
-      <div class="alert alert-danger"><%= flash[:alert] %></div>
-    <% end %>
+    <!-- 💡 通知メッセージ表示エリア -->
+    <div class="container mt-3">
+      <% if flash[:notice] %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <%= flash[:notice] %>
+        </div>
+      <% end %>
+      <% if flash[:alert] %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <%= flash[:alert] %>
+        </div>
+      <% end %>
+    </div>
 
+    <!-- 各画面の中身がここに入ります -->
     <%= yield %>
+
+    <!-- Bootstrap の動き（Javascript）もネットから読み込んでおきます -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

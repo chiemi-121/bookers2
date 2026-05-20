@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   resource :session
 
   # 👤 ユーザー機能関連のルーティング（resourcesを使用）
-  resources :users, only: [:index, :show, :edit, :update]
+  resources :users, only: [:index, :show, :edit, :update, :new, :create]
 
   # 📖 投稿機能関連のルーティング（resourcesを使用）
   resources :books, only: [:index, :show, :edit, :update, :create, :destroy]

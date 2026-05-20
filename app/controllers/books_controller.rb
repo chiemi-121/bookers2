@@ -41,7 +41,7 @@ class BooksController < ApplicationController
     end
   end
 
-  # ✨【追加】本の削除処理
+  #【追加】本の削除
   def destroy
     @book = Book.find(params[:id])
     @book.destroy
@@ -50,8 +50,16 @@ class BooksController < ApplicationController
 
   private
 
-  # 💡 ストロングパラメータ
+  # ストロングパラメータ
   def book_params
     params.require(:book).permit(:title, :body)
   end
+  #  【追加】他の人が投稿した本の編集・削除をブロック
+  def correct_user
+    @book = Book.find(params[:id])
+    unless @book.user == Current.user
+      redirect_to books_path
+    end
+  end
+
 end

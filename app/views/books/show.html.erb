@@ -3,34 +3,42 @@
     <!-- 🌐 左側：共通サイドバー（3カラム分） -->
     <div class="col-md-3">
       <h2>User info</h2>
+      
+      <!-- 投稿者の画像を表示 -->
+      <% if @user.profile_image.attached? %>
+        <%= image_tag @user.profile_image, size: "100x100", class: "attachment user profile_image" %>
+      <% else %>
+        <%= image_tag "no_image.jpg", size: "100x100", class: "attachment user profile_image" %>
+      <% end %>
+
       <table class="table">
         <tbody>
           <tr>
             <th>name</th>
-            <%# 💡 ログイン中の人ではなく、「その本を投稿したユーザー」の情報を表示します %>
             <th><%= @user.name %></th>
           </tr>
           <tr>
             <th>introduction</th>
-            <th></th>
+            <th><%= @user.introduction %></th>
           </tr>
         </tbody>
       </table>
       
       <div class="row mb-3">
-        <%= link_to "プロフィール編集（仮）", root_path, class: "btn btn-outline-secondary btn-block" %>
+        <%= link_to edit_user_path(@user), class: "btn btn-outline-secondary btn-block" do %>
+          <i class="fas fa-user-cog"></i> プロフィール編集
+        <% end %>
       </div>
 
       <h2 class="mt-3">New book</h2>
-      <%# 💡 コントローラで新しく用意した @new_book を使ってフォームを作ります %>
       <%= form_with model: @new_book, local: true do |form| %>
-        <div class="mb-3">
+       <div class="mb-3">
           <%= form.label :title, "Title", class: "form-label" %>
-          <%= form.text_field :title, required: true, class: "form-control" %>
+          <%= form.text_field :title, class: "form-control" %> <!-- 💡 required: true を消す -->
         </div>
         <div class="mb-3">
           <%= form.label :body, "Opinion", class: "form-label" %>
-          <%= form.text_area :body, required: true, class: "form-control" %>
+          <%= form.text_area :body, class: "form-control" %>  <!-- 💡 required: true を消す -->
         </div>
         <div>
           <%= form.submit "Create Book", class: "btn btn-success" %>
@@ -38,22 +46,30 @@
       <% end %>
     </div>
 
-    <!-- 🌐 右側：本の詳細エリア（9カラム分） -->
+    <!-- 🌐 右側：選択された本の詳細（9カラム分） -->
     <div class="col-md-8 offset-md-1">
       <h2>Book detail</h2>
       <table class="table">
         <tbody>
           <tr>
+            <!-- 投稿したユーザーの画像と名前 -->
             <td>
-              <%# 投稿者の画像（仮）と名前 %>
-              ユーザー画像<br>
-              <%= @user.name %>
+              <%= link_to user_path(@user) do %>
+                <% if @user.profile_image.attached? %>
+                  <%= image_tag @user.profile_image, size: "40x40" %><br>
+                <% else %>
+                  <%= image_tag "no_image.jpg", size: "40x40" %><br>
+                <% end %>
+                <%= @user.name %>
+              <% end %>
             </td>
-            <td><%= @book.title %></td>
+            <!-- 本のタイトル -->
+            <td><%= link_to @book.title, book_path(@book) %></td>
+            <!-- 感想 -->
             <td><%= @book.body %></td>
-            
-            <%# 💡 もし「今ログインしている人」と「この本の投稿者」が同じなら、編集・削除ボタンを出す %>
-            <% if @user == Current.user %>
+
+            <!-- 💡 もし自分が投稿した本なら、編集・削除ボタンを表示する -->
+            <% if @book.user == Current.user %>
               <td><%= link_to "Edit", edit_book_path(@book), class: "btn btn-sm btn-success" %></td>
               <td><%= link_to "Destroy", book_path(@book), data: { turbo_method: :delete, turbo_confirm: "本当に消しますか？" }, class: "btn btn-sm btn-danger" %></td>
             <% end %>
@@ -62,3 +78,4 @@
       </table>
     </div>
   </div>
+</div>

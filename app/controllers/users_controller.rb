@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   allow_unauthenticated_access only: [:new, :create]
-
+  # edit, update アクションの前に、本人かチェックする
+  before_action :ensure_correct_user, only: [:edit, :update]
   # 新規登録画面（ログイン前）
   def new
     @user = User.new
@@ -47,9 +48,16 @@ class UsersController < ApplicationController
 
   private
   
-  # 💡 ストロングパラメータを仕様に合わせて調整！
   def user_params
-    # :name, :profile_image, :introduction を確実に許可します
+    # :name, :profile_image, :introduction を確実に許可する
     params.require(:user).permit(:name, :email_address, :password, :password_confirmation, :introduction, :profile_image)
   end
+  #【追加】他のユーザーのプロフィール編集画面へのアクセスをブロックする
+  def ensure_correct_user
+    @user = User.find(params[:id])
+    unless @user == Current.user
+      redirect_to user_path(Current.user)
+    end
+  end
+
 end
