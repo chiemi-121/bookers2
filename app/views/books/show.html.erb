@@ -1,10 +1,10 @@
 <div class="container px-5 px-sm-0 mt-3">
   <div class="row">
-    <!-- 🌐 左側：共通サイドバー（3カラム分） -->
+    
     <div class="col-md-3">
       <h2>User info</h2>
       
-      <!-- 投稿者の画像を表示 -->
+      
       <% if @user.profile_image.attached? %>
         <%= image_tag @user.profile_image, size: "100x100", class: "attachment user profile_image" %>
       <% else %>
@@ -46,13 +46,12 @@
       <% end %>
     </div>
 
-    <!-- 🌐 右側：選択された本の詳細（9カラム分） -->
+    
     <div class="col-md-8 offset-md-1">
       <h2>Book detail</h2>
       <table class="table">
         <tbody>
           <tr>
-            <!-- 投稿したユーザーの画像と名前 -->
             <td>
               <%= link_to user_path(@user) do %>
                 <% if @user.profile_image.attached? %>
@@ -63,12 +62,10 @@
                 <%= @user.name %>
               <% end %>
             </td>
-            <!-- 本のタイトル -->
+            
             <td><%= link_to @book.title, book_path(@book) %></td>
-            <!-- 感想 -->
+            
             <td><%= @book.body %></td>
-
-            <!-- 💡 もし自分が投稿した本なら、編集・削除ボタンを表示する -->
             <% if @book.user == Current.user %>
               <td><%= link_to "Edit", edit_book_path(@book), class: "btn btn-sm btn-success" %></td>
               <td><%= link_to "Destroy", book_path(@book), data: { turbo_method: :delete, turbo_confirm: "本当に消しますか？" }, class: "btn btn-sm btn-danger" %></td>

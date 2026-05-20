@@ -1,13 +1,11 @@
 <div class="container px-5 px-sm-0 mt-3">
-  <!-- 💡 エラーメッセージを最上部に表示 -->
+
   <%= render 'layouts/error_messages', model: @book %>
 
   <div class="row">
-    <!-- 🌐 左側：User info ＆ New book（3カラム分） -->
     <div class="col-md-3">
       <h2>User info</h2>
-      
-      <!-- プロフィール画像 -->
+   
       <% if Current.user.profile_image.attached? %>
         <%= image_tag Current.user.profile_image, size: "100x100", class: "attachment user profile_image" %>
       <% else %>
@@ -27,14 +25,13 @@
         </tbody>
       </table>
       
-      <!-- プロフィール編集ボタン -->
+
       <div class="row mb-3">
         <%= link_to edit_user_path(Current.user), class: "btn btn-outline-secondary btn-block" do %>
           <i class="fas fa-user-cog"></i>
         <% end %>
       </div>
 
-      <!-- 新規投稿フォーム -->
       <h2 class="mt-3">New book</h2>
       <%= form_with model: @book, local: true do |form| %>
         <div class="mb-3">
@@ -50,8 +47,6 @@
         </div>
       <% end %>
     </div>
-
-    <!-- 🌐 右側：Books 一覧（9カラム分、少し左に余白を空ける） -->
     <div class="col-md-8 offset-md-1">
       <h2>Books</h2>
       <table class="table table-hover table-inverse">
@@ -67,7 +62,6 @@
           <% @books.each do |book| %>
             <tr>
               <td>
-                <!-- 投稿したユーザーのマイページへのリンク画像 -->
                 <%= link_to user_path(book.user) do %>
                   <% if book.user.profile_image.attached? %>
                     <%= image_tag book.user.profile_image, size: "40x40" %>
