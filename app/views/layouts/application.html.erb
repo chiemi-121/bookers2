@@ -32,55 +32,54 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <!-- 💡 flex-row と nav-link のスタイルを調整して確実に綺麗に横並びにします -->
-          <ul class="navbar-nav ms-auto flex-row">
-            <% if Current.user %>
-              <li class="nav-item">
-                <%= link_to user_path(Current.user), class: "nav-link text-light px-3" do %>
-                  <i class="fas fa-home"></i> Home
-                <% end %>
-              </li>
-              <li class="nav-item">
-                <%= link_to users_path, class: "nav-link text-light px-3" do %>
-                  <i class="fas fa-users"></i> Users
-                <% end %>
-              </li>
-              <li class="nav-item">
-                <%= link_to books_path, class: "nav-link text-light px-3" do %>
-                  <i class="fas fa-book-open"></i> Books
-                <% end %>
-              </li>
-              <li class="nav-item">
-                <%= link_to session_path, data: { turbo_method: :delete }, class: "nav-link text-light px-3" do %>
-                  <i class="fas fa-sign-out-alt"></i> Log out
-                <% end %>
-              </li>
-            <% else %>
-              <li class="nav-item">
-                <%= link_to root_path, class: "nav-link text-light px-3" do %>
-                  <i class="fas fa-home"></i> Home
-                <% end %>
-              </li>
-              <li class="nav-item">
-                <%= link_to about_path, class: "nav-link text-light px-3" do %>
-                  <i class="fas fa-link"></i> About
-                <% end %>
-              </li>
-              <li class="nav-item">
-                <%= link_to new_user_path, class: "nav-link text-light px-3" do %>
-                  <i class="fas fa-user-plus"></i> Sign up
-                <% end %>
-              </li>
-              <li class="nav-item">
-                <%= link_to new_session_path, class: "nav-link text-light px-3" do %>
-                  <i class="fas fa-sign-in-alt"></i> Log in
-                <% end %>
-              </li>
-            <% end %>
-          </ul>
-        </div>
+<div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+  <ul class="navbar-nav ms-auto">
+    <% if user_signed_in? %>
+      <li class="nav-item">
+        <%= link_to user_path(current_user.id), class: "nav-link text-light px-3" do %>
+          <i class="fas fa-home"></i> Home
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to users_path, class: "nav-link text-light px-3" do %>
+          <i class="fas fa-users"></i> Users
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to books_path, class: "nav-link text-light px-3" do %>
+          <i class="fas fa-book-open"></i> Books
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link text-light px-3" do %>
+          <i class="fas fa-sign-out-alt"></i> Log out
+        <% end %>
+      </li>
+    <% else %>
+      <li class="nav-item">
+        <%= link_to root_path, class: "nav-link text-light px-3" do %>
+          <i class="fas fa-home"></i> Home
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to about_path, class: "nav-link text-light px-3" do %>
+          <i class="fas fa-link"></i> About
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to new_user_registration_path, class: "nav-link text-light px-3" do %>
+          <i class="fas fa-user-plus"></i> Sign up
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to new_user_session_path, class: "nav-link text-light px-3" do %>
+          <i class="fas fa-sign-in-alt"></i> Log in
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</div>
+        
       </div>
     </header>
 

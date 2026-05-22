@@ -2,29 +2,30 @@
   <div class="row">
     <div class="col-sm-12 col-md-8 col-lg-5 px-5 px-sm-0 mx-auto">
       <h2>User info</h2>
+      
       <%= render 'layouts/error_messages', model: @user %>
-      <!-- 💡 ユーザー情報を更新するフォーム -->
-      <%= form_with model: @user, local: true do |f| %>
+      
+      <%= form_with model: @user, local: true, multipart: true do |f| %>
         
-        <!-- 👤 名前入力欄 -->
+        <!-- 名前入力欄 -->
         <div class="mb-3">
-          <%= f.label :name, "Name", class: "form-label" %>
-          <%= f.text_field :name, class: "form-control" %>
+          <%= f.label :name, "Name" %>
+          <%= f.text_field :name, id: "name", class: "form-control" %>
         </div>
         
-        <!-- 📸 画像アップロード欄 -->
+        <!-- 画像アップロード欄 -->
         <div class="mb-3">
           <%= f.label :profile_image, "Image", class: "form-label" %>
           <%= f.file_field :profile_image, accept: "image/*", class: "form-control" %>
         </div>
         
-        <!-- 📝 自己紹介文入力欄 -->
+        <!-- 自己紹介文入力欄 -->
         <div class="mb-3">
           <%= f.label :introduction, "Introduction", class: "form-label" %>
           <%= f.text_area :introduction, class: "form-control" %>
         </div>
         
-        <!-- 💾 更新ボタン -->
+        <!-- 更新ボタン -->
         <div class="mb-3">
           <%= f.submit "Update User", class: "btn btn-secondary" %>
         </div>

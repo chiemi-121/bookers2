@@ -1,57 +1,11 @@
 <div class="container px-5 px-sm-0 mt-3">
-  <!-- 💡 新規投稿などでエラーが出た場合のメッセージ表示パーツ -->
-  <%= render 'layouts/error_messages', model: @book %>
-
   <div class="row">
-    <!-- 🌐 左側：User info ＆ New book（3カラム分） -->
     <div class="col-md-3">
       <h2>User info</h2>
-      
-      <!-- プロフィール画像 -->
-      <% if Current.user.profile_image.attached? %>
-        <%= image_tag Current.user.profile_image, size: "100x100", class: "attachment user profile_image mb-3" %>
-      <% else %>
-        <%= image_tag "no_image.jpg", size: "100x100", class: "attachment user profile_image mb-3" %>
-      <% end %>
-
-      <table class="table">
-        <tbody>
-          <tr>
-            <th>name</th>
-            <th><%= Current.user.name %></th>
-          </tr>
-          <tr>
-            <th>introduction</th>
-            <th><%= Current.user.introduction %></th>
-          </tr>
-        </tbody>
-      </table>
-      
-      <!-- プロフィール編集ボタン -->
-      <div class="row mb-3">
-        <%= link_to edit_user_path(Current.user), class: "btn btn-outline-secondary btn-block" do %>
-          <i class="fas fa-user-cog"></i>
-        <% end %>
-      </div>
-
-      <!-- 新規投稿フォーム（仕様に基づき配置） -->
+      <%= render 'users/info', user: @user %>
       <h2 class="mt-3">New book</h2>
-      <%= form_with model: @book, local: true do |form| %>
-        <div class="mb-3">
-          <%= form.label :title, "Title", class: "form-label" %>
-          <%= form.text_field :title, class: "form-control" %>
-        </div>
-        <div class="mb-3">
-          <%= form.label :body, "Opinion", class: "form-label" %>
-          <%= form.text_area :body, class: "form-control" %>
-        </div>
-        <div>
-          <%= form.submit "Create Book", class: "btn btn-success" %>
-        </div>
-      <% end %>
+      <%= render 'books/form', book: @book %>
     </div>
-
-    <!-- 🌐 右側：Users 一覧テーブル（8カラム分、少し左に余白を空ける） -->
     <div class="col-md-8 offset-md-1">
       <h2>Users</h2>
       <table class="table">
@@ -59,21 +13,15 @@
           <tr>
             <th>image</th>
             <th>name</th>
-            <th colspan="3"></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           <% @users.each do |user| %>
             <tr>
-              <td>
-                <% if user.profile_image.attached? %>
-                  <%= image_tag user.profile_image, size: "40x40" %>
-                <% else %>
-                  <%= image_tag "no_image.jpg", size: "40x40" %>
-                <% end %>
-              </td>
+              <td><%= image_tag user.get_profile_image(50, 50) %></td>
               <td><%= user.name %></td>
-              <td><%= link_to "Show", user_path(user), class: "user_#{user.id}" %></td>
+              <td><%= link_to "Show", user_path(user) %></td>
             </tr>
           <% end %>
         </tbody>

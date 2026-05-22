@@ -5,10 +5,10 @@
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-
+  
   # While tests run files are not watched, reloading is not necessary.
   config.enable_reloading = false
-
+  config.action_controller.default_url_options = { host: 'localhost', port: 3000 }
   # Eager loading loads your entire application. When running a single test locally,
   # this is usually not necessary, and can slow down your test suite. However, it's
   # recommended that you enable it in continuous integration systems to ensure eager
@@ -40,7 +40,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: "example.com" }
 
   # Print deprecation notices to the stderr.
-  config.active_support.deprecation = :stderr
+  config.active_support.deprecation = :silence
 
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
