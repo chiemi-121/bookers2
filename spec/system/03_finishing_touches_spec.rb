@@ -249,7 +249,9 @@ describe '[STEP3] 仕上げのテスト' do
         end
         it '自分の名前と紹介文は表示されない', spec_category: "基本的なアソシエーション概念と適切な変数設定" do
           expect(page).not_to have_content user.name
-          expect(page).not_to have_content user.introduction
+          if user.introduction.present?
+            expect(page).not_to have_content user.introduction
+          end
         end
         it '自分のユーザ編集画面へのリンクは存在しない', spec_category: "基本的なアソシエーション概念と適切な変数設定" do
           expect(page).not_to have_link '', href: edit_user_path(user)
@@ -303,7 +305,9 @@ describe '[STEP3] 仕上げのテスト' do
         end
         it '自分の名前と紹介文は表示されない', spec_category: "基本的なアソシエーション概念と適切な変数設定" do
           expect(page).not_to have_content user.name
-          expect(page).not_to have_content user.introduction
+          if user.introduction.present?
+            expect(page).not_to have_content user.introduction 
+          end 
         end
         it '自分のユーザ編集画面へのリンクは存在しない', spec_category: "基本的なアソシエーション概念と適切な変数設定" do
           expect(page).not_to have_link '', href: edit_user_path(user)
