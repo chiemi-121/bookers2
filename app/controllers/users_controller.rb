@@ -1,13 +1,12 @@
 class UsersController < ApplicationController
- 
   before_action :authenticate_user!
+  # 編集・更新だけでなく、本人以外がアクセスできないように制限をかける場合は
+  # edit, update に加えて必要に応じて適用します
   before_action :ensure_correct_user, only: [:edit, :update]
-
   def index
-    @user = current_user
     @users = User.all
+    # @user = current_user は不要なら削除してください
     @book = Book.new
-    @books = Book.all
   end
 
   def show
@@ -26,22 +25,20 @@ class UsersController < ApplicationController
       flash[:notice] = "You have updated user successfully."
       redirect_to user_path(@user.id)
     else
-     render :edit 
+      # 失敗した場合は入力内容を保持して編集画面を再表示
+      render :edit
     end
   end
 
   private
 
-  def user_params
-   
-    params.require(:user).permit(:name, :email, :introduction, :profile_image)
-  end
-
-  def ensure_correct_user
+ def ensure_correct_user
+    # URLのユーザーID（params[:id]）をUserとして検索
     @user = User.find(params[:id])
-   
-    unless @user == current_user
-      redirect_to user_path(current_user)
+    
+    # ログインユーザーのidと比較して、一致しなければリダイレクト
+    unless @user.id == current_user.id
+      redirect_to books_path # 本人の画面以外なら投稿一覧へリダイレクト
     end
   end
 end
