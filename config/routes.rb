@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     get '/users/sign_up' => 'devise/registrations#new', as: 'new_user'
     get '/users/sign_in' => 'devise/sessions#new', as: 'new_session'
     get '/session/new' => 'devise/sessions#new'
+    
     post '/session/new' => 'devise/sessions#create'
 
   end
@@ -23,7 +24,7 @@ Rails.application.routes.draw do
     get 'followers' => 'relationships#followers', as: 'followers'
   end
 
-
+  get "search" => "searches#search"
 
 
 end

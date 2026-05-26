@@ -1,0 +1,41 @@
+<div class="container">
+  <h2>Results index for '<%= @content %>'</h2>
+
+  <table class="table table-hover table-inverse">
+    <thead>
+      <% if @model == 'user' %>
+        <tr>
+          <th>image</th>
+          <th>name</th>
+          <th colspan="3"></th>
+        </tr>
+      <% else %>
+        <tr>
+          <th></th>
+          <th>Title</th>
+          <th>Opinion</th>
+          <th colspan="3"></th>
+        </tr>
+      <% end %>
+    </thead>
+    <tbody>
+      <% if @model == 'user' %>
+        <% @records.each do |user| %>
+          <tr>
+            <td><%= image_tag user.get_profile_image(50,50) %></td>
+            <td><%= user.name %></td>
+            <td><%= link_to 'Show', user_path(user.id) %></td>
+          </tr>
+        <% end %>
+      <% else %>
+        <% @records.each do |book| %>
+          <tr>
+            <td><%= image_tag book.user.get_profile_image(50,50) %></td>
+            <td><%= link_to book.title, book_path(book.id) %></td>
+            <td><%= book.body %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
