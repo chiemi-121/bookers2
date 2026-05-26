@@ -5,18 +5,44 @@
       <th>name</th>
       <th><%= user.name %></th>
     </tr>
-    <%# 以下のif文で、紹介文が空のときは「introduction」というラベルごと非表示にします %>
+    <%# 以下のif文で、紹介文が空のときは「introduction」というラベルごと非表示にする %>
     <% if user.introduction.present? %>
       <tr>
         <th>introduction</th>
         <th><%= user.introduction %></th>
       </tr>
     <% end %>
+    <%# --- 追加部分: フォロー数とフォロワー数 --- %>
+    <tr>
+      <th>follows</th>
+      <th><%= link_to user.followings.count, user_followings_path(user) %></th>
+    </tr>
+    <tr>
+      <th>followers</th>
+      <th><%= link_to user.followers.count, user_followers_path(user) %></th>
+    </tr>
+
+
   </tbody>
 </table>
 
 <div class="row">
-  <%= link_to edit_user_path(user), class: "btn btn-outline-secondary btn-block" do %>
-    <i class="fas fa-user-cog"></i>
+  
+  <%# --- 追加部分: フォローボタン（自分以外の場合のみ表示） --- %>
+  <% if user != current_user %>
+    <% if current_user.following?(user) %>
+      <%= button_to "フォロー外す", user_relationships_path(user.id), method: :delete, data: { turbo: false }, class: "btn btn-danger btn-block mb-3" %>
+    <% else %>
+      <%= button_to "フォローする", user_relationships_path(user.id), method: :post, data: { turbo: false }, class: "btn btn-success btn-block mb-3" %>
+    <% end %>
   <% end %>
-</div>
+
+  <%# 編集ボタン（自分自身の場合のみ表示する条件！） %>
+  <% if user == current_user %>
+    <%= link_to edit_user_path(user), class: "btn btn-outline-secondary btn-block" do %>
+      <i class="fas fa-user-cog"></i>
+    <% end %>
+  <% end %>
+</div> 
+
+ 

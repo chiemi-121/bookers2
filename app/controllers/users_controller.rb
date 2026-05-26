@@ -1,11 +1,8 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  # 編集・更新だけでなく、本人以外がアクセスできないように制限をかける場合は
-  # edit, update に加えて必要に応じて適用します
   before_action :ensure_correct_user, only: [:edit, :update]
   def index
     @users = User.all
-    # @user = current_user は不要なら削除してください
     @book = Book.new
   end
 
