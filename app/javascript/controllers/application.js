@@ -1,3 +1,4 @@
+import "@hotwired/turbo-rails" // ← ここに追加！
 import { Application } from "@hotwired/stimulus"
 
 const application = Application.start()

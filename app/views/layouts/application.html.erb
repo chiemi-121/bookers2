@@ -20,8 +20,10 @@
     
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
 
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= turbo_include_tags %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    
   </head>
 
   <body>
