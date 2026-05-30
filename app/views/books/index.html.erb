@@ -47,7 +47,7 @@
                   <% end %>
                 <% end %>
               </td>
-              <td><%= link_to book.title, book_path(book) %></td>
+              <td><%= link_to book.title, book_path(book), data: { turbo: "false" } %></td>
               <td><%= book.body %></td>
 
               <%# ここからいいねボタンだけに統一 %>

@@ -1,0 +1,7 @@
+<%# 1. 削除したコメントのdivだけをピンポイントで削除 %>
+<%= turbo_stream.remove "book_comment_#{@comment_id}" %>
+
+<%# 2. 件数を最新に更新 %>
+<%= turbo_stream.replace "comment_count_area" do %>
+  <div id="comment_count_area"><p>DEBUG: コメントは <%= @book.book_comments.count %> 件あります</p></div>
+<% end %>

@@ -1,0 +1,27 @@
+<%# 1. 新しいコメントを一覧の最後に追記 %>
+<%= turbo_stream.append "comments_list_area" do %>
+  <div id="book_comment_<%= @comment.id %>">
+    <p>
+      <%= @comment.user.name %>: <%= @comment.comment %>
+      <%= button_to "Destroy", book_book_comment_path(@comment.book, @comment), 
+          method: :delete, 
+          data: { turbo_submits_with: "削除中..." }, 
+          class: "btn btn-sm btn-danger" %>
+    </p>
+  </div>
+<% end %>
+
+<%# 2. 件数を最新に更新 %>
+<%= turbo_stream.replace "comment_count_area" do %>
+  <div id="comment_count_area"><p>DEBUG: コメントは <%= @book.book_comments.count %> 件あります</p></div>
+<% end %>
+
+<%# 3. フォームを空の状態で再レンダリング（これで文字が消える） %>
+<%= turbo_stream.replace "comment_form" do %>
+  <div id="comment_form">
+    <%= form_with model: [@book, BookComment.new], local: false, data: { turbo_submits_with: "送信中..." } do |f| %>
+      <%= f.text_area :comment, rows: '5', placeholder: "コメントをここに" %>
+      <%= f.submit "送信" %>
+    <% end %>
+  </div>
+<% end %>
